@@ -1,6 +1,3 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
 
 body {
   margin: 0;
@@ -9,9 +6,11 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background: #0a2f5599;
+  height: 100vh;
 }
 
-code {
+/* code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
-}
+} */ 
