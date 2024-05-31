@@ -4,6 +4,7 @@ import Filter from "../components/Filter";
 import CustomTable from "../components/CustomTable";
 import { ModalDetail } from "../components/ModalDetail";
 import Header from "../components/Header.js";
+import { Box, Button, TextField, Typography } from "@mui/material";
 
 const MainPage = ({onLogout}) => {
   const [shipments, setShipments] = useState([]);
@@ -11,6 +12,10 @@ const MainPage = ({onLogout}) => {
   const [error, setError] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [shipmentStatus, setShipmentStatus] = useState(null);
+
+  const [courier, setCourier] = useState("");
+  const [trackingNumber, setTrackingNumber] = useState("");
+
   const [filtro, setFiltro] = useState({
     where: {
       fulfillmentDate: {
@@ -48,7 +53,7 @@ const MainPage = ({onLogout}) => {
 
       setCount(body.count);
     } catch (error) {
-      setError("Error al obtener envíos");
+      setError("Error al obtener envío");
     }
   };
 
@@ -69,7 +74,17 @@ const MainPage = ({onLogout}) => {
       setShipmentStatus(response.body.data[0]);
     } catch (error) {
       
-      setError("Error al obtener envíos");
+      setError("Error al obtener envío");
+    }
+  };
+
+  const handleSearch = async () => {
+    try {
+      await fetchShipmentsStatus(courier, trackingNumber);
+      setIsModalOpen(true);
+    } catch (error) {
+      setIsModalOpen(true); // Abrir el modal aunque no se haya encontrado el envío
+      error("Envío no encontrado");
     }
   };
 
@@ -122,6 +137,27 @@ const MainPage = ({onLogout}) => {
        <Header onLogout={onLogout} />
 
     <div className="" style={{display:"flex", justifyContent:"center", flexDirection:"column"}}>
+      
+    <div style={{ padding: "1rem", display: "flex", justifyContent: "center" }}>
+
+    <Box sx={{ margin: "2rem 0", textAlign: "center",padding: '1rem', display: 'flex', flexWrap: 'wrap', gap: '1rem', border: '1px solid #ccc', background: "white",borderRadius: '8px', margin: '0 auto', justifyContent: 'center'   }}>
+      <Typography variant="h6">Buscar Envío Manualmente</Typography>
+      <Box sx={{ display: "flex", justifyContent: "center", gap: "1rem", marginTop: "1rem" }}>
+        <TextField
+          label="Mensajería"
+          value={courier}
+          onChange={(e) => setCourier(e.target.value)}
+        />
+        <TextField
+          label="Número de Seguimiento"
+          value={trackingNumber}
+          onChange={(e) => setTrackingNumber(e.target.value)}
+        />
+        <Button variant="contained" onClick={handleSearch}>Buscar</Button>
+      </Box>
+    </Box>
+    </div>
+
         <div style={{ padding: "1rem", display: "flex", justifyContent: "center" }}>
           <Filter filtro={filtro} setFiltro={setFiltro} />
         </div>
@@ -139,6 +175,7 @@ const MainPage = ({onLogout}) => {
         open={isModalOpen} 
         onClose={handlerCloseDetail}
         data={shipmentStatus}
+        error={error}
       >
 
       </ModalDetail>
