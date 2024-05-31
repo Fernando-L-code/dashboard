@@ -13,43 +13,40 @@ import {
   import VisibilityIcon from '@mui/icons-material/Visibility';
   import React, { useState } from "react";
 import moment from "moment";
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-
   
 
-const CustomTable = ({ columns, data }) => {
+const CustomTable = ({ columns, data, filtro, count, setFiltro }) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [orderBy, setOrderBy] = useState("");
-  const [order, setOrder] = useState("asc");
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
+    const newOffset = newPage * rowsPerPage;
+  
+    // Actualiza el offset en el filtro sin cambiar la página
+    setFiltro((prevFiltro) => ({
+      ...prevFiltro,
+      offset: newOffset
+    }));
   };
 
   const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
+    const newRowsPerPage = +event.target.value;
+    setRowsPerPage(newRowsPerPage);
     setPage(0);
+    // Simulando el cambio de página restableciendo el offset a 0
+    setFiltro((prevFiltro) => ({
+      ...prevFiltro,
+      limit: newRowsPerPage,
+      offset: 0,
+    }));
+  
   };
 
   const formatCreatedAt = (value) => {
     return moment.utc(value).format("D/MMMM/YYYY");
   };
 
-  const handleSort = (columnId) => {
-    const isAsc = orderBy === columnId && order === "asc";
-    setOrderBy(columnId);
-    setOrder(isAsc ? "desc" : "asc");
-  };
-
-  const sortedData = data.sort((a, b) => {
-    if (order === "asc") {
-      return a[orderBy] < b[orderBy] ? -1 : 1;
-    } else {
-      return a[orderBy] > b[orderBy] ? -1 : 1;
-    }
-  });
 
   return (
     <Paper sx={{ width: "90%", margin: "auto" }}>
@@ -69,7 +66,7 @@ const CustomTable = ({ columns, data }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {sortedData
+            {data
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row) => {
                 return (
@@ -109,7 +106,7 @@ const CustomTable = ({ columns, data }) => {
       <TablePagination
         rowsPerPageOptions={[5, 10, 15, 20]}
         component="div"
-        count={data.length}
+        count={count}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}
