@@ -1,14 +1,14 @@
 import makeRequest from "./apiServices";
- let token2 =localStorage.getItem("token")
+ let token =localStorage.getItem("token")
 
 
-const GetStatus = async (courier, tracking, token) => {
+const GetStatus = async (courier, tracking) => {
   const endpoint = 'shipment/status';
   const method = 'POST';
   const body = { courier, tracking };
 
   try {
-    const response = await makeRequest(endpoint, method, {}, body,token2);
+    const response = await makeRequest(endpoint, method, {}, body,token);
     return response;
   } catch (error) {
     console.error('Error al crear envío:', error);
@@ -16,7 +16,7 @@ const GetStatus = async (courier, tracking, token) => {
   }
 };
 
-const getShipments = async (queryParams, token) => {
+const getShipments = async (queryParams) => {
   const endpoint = 'shipment/list';
   const method = 'GET';
 
@@ -30,7 +30,7 @@ const getShipments = async (queryParams, token) => {
   };
 
   try {
-    const response = await makeRequest(endpoint, method, params, {},token2);
+    const response = await makeRequest(endpoint, method, params, {},token);
     return response;
   } catch (error) {
     console.error('Error al obtener envíos:', error);

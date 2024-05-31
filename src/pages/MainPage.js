@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getShipments } from "../services/shipmentService";
+import { GetStatus, getShipments } from "../services/shipmentService";
 import Filter from "../components/Filter";
 import CustomTable from "../components/CustomTable";
 import { ModalDetail } from "../components/ModalDetail";
@@ -10,6 +10,7 @@ const MainPage = ({onLogout}) => {
   const [count, setCount] = useState(0);
   const [error, setError] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [shipmentStatus, setShipmentStatus] = useState(null);
   const [filtro, setFiltro] = useState({
     where: {
       fulfillmentDate: {
@@ -50,9 +51,27 @@ const MainPage = ({onLogout}) => {
       setError("Error al obtener envíos");
     }
   };
-  const handlerOpenDetail= ( event)=>{
 
-  }
+  const handlerOpenDetail = async (event) => {
+    await fetchShipmentsStatus(event.courier, event.trackingNumber);
+    setIsModalOpen(true);
+  };
+
+  const handlerCloseDetail = () => {
+    setShipmentStatus(null)
+    setIsModalOpen(false);
+  };
+
+  const fetchShipmentsStatus = async (courier, trackingNumber) => {
+    try {
+      const response = await GetStatus(courier, trackingNumber);
+      console.log(response.body.data[0])
+      setShipmentStatus(response.body.data[0]);
+    } catch (error) {
+      
+      setError("Error al obtener envíos");
+    }
+  };
 
   const columns = [
     { id: "trackingNumber", 
@@ -116,11 +135,12 @@ const MainPage = ({onLogout}) => {
           handlerOpenDetail = {handlerOpenDetail}
         />
 
-      <ModalDetail open={isModalOpen} 
-        // onClose={closeModal}
+      <ModalDetail 
+        open={isModalOpen} 
+        onClose={handlerCloseDetail}
+        data={shipmentStatus}
       >
-        <h2>Contenido del Modal</h2>
-        <p>Aquí puedes colocar cualquier contenido que desees mostrar en el modal.</p>
+
       </ModalDetail>
     </div>
     </div>

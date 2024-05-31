@@ -89,7 +89,7 @@ const CustomTable = ({ columns, data, filtro, count, setFiltro, handlerOpenDetai
                             <div>
                               <IconButton 
                               color="primary"
-                                onClick={handlerOpenDetail()}
+                                onClick={()=>handlerOpenDetail(row ) }
                               >
                                 <VisibilityIcon />
                               </IconButton>
