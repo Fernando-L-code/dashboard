@@ -1,7 +1,7 @@
 import { Button, FormControl, InputLabel, MenuItem, Select, TextField } from "@mui/material";
 import moment from "moment";
 
-const Filter = ({ filtro, setFiltro,handleSearch }) => {
+const Filter = ({ filtro, setFiltro }) => {
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         const formattedValue = name.startsWith("fulfillmentDate")
@@ -88,15 +88,7 @@ const Filter = ({ filtro, setFiltro,handleSearch }) => {
                 </Select>
             </FormControl>
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', flexBasis: '200px', alignSelf: 'center' }}>
-            <Button 
-              variant="contained"
-              onClick={handleSearch}
-              style={{ padding: '0.5rem 1rem', backgroundColor: '#007BFF', color: 'white', cursor: 'pointer' }}
-            >
-              Search
-            </Button>
-          </div>
+  
         </div>
       );
     };

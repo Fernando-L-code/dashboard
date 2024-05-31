@@ -3,10 +3,12 @@ import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-d
 import MainPage from "./pages/MainPage";
 import { LogIn } from "./pages/LogIn.js";
 
+import './App.css'
+
 const AppRoutes = () => {
   const [token, setToken] = useState(localStorage.getItem("token"));
 
- 
+  
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -14,14 +16,13 @@ const AppRoutes = () => {
   };
   return (
     <Router>
+        <div className={!token?"mainContainer":'' }> 
       <Routes>
 
-        {/* <div style={{ backgroundColor: '#0a2f5599', minHeight: '100vh', display:'flex', justifyContent:'center', alignItems:"center" }}>  */}
         <Route 
           path="/login" 
           element={token ? <Navigate to="/main" /> : <LogIn setToken={setToken} />} 
           />
-          {/* </div> */}
         <Route 
           path="/main" 
           element={token ? <MainPage onLogout={handleLogout} /> : <Navigate to="/login" />} 
@@ -31,6 +32,7 @@ const AppRoutes = () => {
           element={<Navigate to={token ? "/main" : "/login"} />} 
           />
       </Routes>
+          </div>
     </Router>
   );
 };

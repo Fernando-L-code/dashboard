@@ -15,7 +15,7 @@ import {
 import moment from "moment";
   
 
-const CustomTable = ({ columns, data, filtro, count, setFiltro }) => {
+const CustomTable = ({ columns, data, filtro, count, setFiltro, handlerOpenDetail }) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
@@ -42,6 +42,8 @@ const CustomTable = ({ columns, data, filtro, count, setFiltro }) => {
     }));
   
   };
+
+
 
   const formatCreatedAt = (value) => {
     return moment.utc(value).format("D/MMMM/YYYY");
@@ -85,7 +87,10 @@ const CustomTable = ({ columns, data, filtro, count, setFiltro }) => {
                         <TableCell key={column.id} align={column.align}>
                           {column.id === "actions" ? (
                             <div>
-                              <IconButton color="primary">
+                              <IconButton 
+                              color="primary"
+                                onClick={handlerOpenDetail()}
+                              >
                                 <VisibilityIcon />
                               </IconButton>
                             </div>

@@ -50,7 +50,7 @@ const MainPage = ({onLogout}) => {
       setError("Error al obtener envíos");
     }
   };
-  const handlerOpenDetail= ()=>{
+  const handlerOpenDetail= ( event)=>{
 
   }
 
@@ -107,10 +107,17 @@ const MainPage = ({onLogout}) => {
           <Filter filtro={filtro} setFiltro={setFiltro} />
         </div>
 
-        <CustomTable columns={columns} data={flattenedShipments} filtro ={filtro}  count={count} setFiltro={setFiltro} />
+        <CustomTable 
+          columns={columns} 
+          data={flattenedShipments} 
+          filtro ={filtro}  
+          count={count} 
+          setFiltro={setFiltro} 
+          handlerOpenDetail = {handlerOpenDetail}
+        />
 
       <ModalDetail open={isModalOpen} 
-      // onClose={closeModal}
+        // onClose={closeModal}
       >
         <h2>Contenido del Modal</h2>
         <p>Aquí puedes colocar cualquier contenido que desees mostrar en el modal.</p>

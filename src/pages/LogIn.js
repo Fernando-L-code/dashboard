@@ -1,9 +1,7 @@
 import { Box, Button, Container, CssBaseline, TextField, Typography } from '@mui/material';
 import React, { useState } from 'react'
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import loginUser from '../services/userServices';
 
-const defaultTheme = createTheme();
 export const LogIn = ( {setToken}) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -16,7 +14,7 @@ export const LogIn = ( {setToken}) => {
           const { body } = response;
           if (body.success) {
 
-            console.log(response)
+            localStorage.setItem('token', body.accessToken);
             setToken(body.accessToken);
           } else {
 
